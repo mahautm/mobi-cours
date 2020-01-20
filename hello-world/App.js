@@ -6,42 +6,80 @@ import {
   Image,
   ScrollView,
   FlatList,
-  SafeAreaView
+  SafeAreaView,
+  TouchableOpacity,
+  SelectionList,
+  TextInput
 } from "react-native";
+import Constants from "expo-constants";
+import PizzaTranslator from "./PizzaTranslator";
 
 const DATA = [
   {
-    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-    title: "First Item"
+    id: "1",
+    title: "First Item",
+    name: "Guillaume"
   },
   {
-    id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-    title: "Second Item"
+    id: "2",
+    title: "Second Item",
+    name: "Maudeline"
   },
   {
-    id: "58694a0f-3da1-471f-bd96-145571e29d72",
-    title: "Third Item"
+    id: "3",
+    title: "Third Item",
+    name: "Constance"
+  },
+  {
+    id: "4",
+    title: "Third Item",
+    name: "Benjamin"
+  },
+  {
+    id: "5",
+    title: "Third Item",
+    name: "Caroline"
+  },
+  {
+    id: "6",
+    title: "Third Item",
+    name: "Céline"
+  },
+  {
+    id: "7",
+    title: "Third Item",
+    name: "Justin"
   }
 ];
 
-function Item({ title }) {
+function Item({ id, title, selected, onSelect }) {
   return (
-    <View style={styles.item}>
+    <TouchableOpacity
+      onPress={() => onSelect(id)}
+      style={[
+        styles.item,
+        { backgroundColor: selected ? "#6e3b6e" : "#f9c2ff" }
+      ]}
+    >
       <Text style={styles.title}>{title}</Text>
-    </View>
+    </TouchableOpacity>
   );
 }
 
 export default function App() {
+  const [selected, setSelected] = React.useState(new Map());
+  const onSelect = React.useCallback(
+    id => {
+      const newSelected = new Map(selected);
+      newSelected.set(id, !selected.get(id));
+
+      setSelected(newSelected);
+    },
+    [selected]
+  );
+
   return (
-    <Viw>
-      <SafeAreaView style={styles.container}>
-        <FlatList
-          data={DATA}
-          renderItem={({ item }) => <Item title={item.title} />}
-          keyExtractor={item => item.id}
-        />
-      </SafeAreaView>
+    <SafeAreaView style={styles.container}>
       <ScrollView>
         <Text style={styles.stars}>
           The Angel{"\n"}
@@ -65,7 +103,7 @@ export default function App() {
           For the time of youth was fled,{"\n"}
           And grey hairs were on my head.{"\n"}
         </Text>
-        <ScrollView horizontal>
+        <ScrollView horizontal style={{ height: 500 }}>
           <Image
             source={{
               uri:
@@ -80,21 +118,37 @@ export default function App() {
             }}
             style={{ width: 278, height: 500 }}
           />
+          <SafeAreaView>
+            <FlatList
+              data={DATA}
+              renderItem={({ item }) => (
+                <Item
+                  id={item.id}
+                  title={item.name}
+                  selected={!!selected.get(item.id)}
+                  onSelect={onSelect}
+                />
+              )}
+              keyExtractor={item => item.id}
+              extraData={selected}
+            />
+          </SafeAreaView>
+          <PizzaTranslator />
         </ScrollView>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "black",
+    backgroundColor: "white",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    marginTop: Constants.statusBarHeight
   },
   stars: {
-    marginTop: 30,
     fontSize: 16,
     textAlign: "center"
   },
@@ -117,9 +171,10 @@ const styles = StyleSheet.create({
   },
   item: {
     backgroundColor: "#f9c2ff",
-    padding: 20,
+    paddingVertical: 20,
+    paddingHorizontal: 70,
     marginVertical: 8,
-    marginHorizontal: 16
+    marginHorizontal: 3
   },
   title: {
     fontSize: 32
