@@ -11,6 +11,9 @@ export default function App() {
         source={require("./assets/logo(2019).png")}
       />
       <Login />
+      <Text>Mot de Passe oublié</Text>
+      <Text>Inscription</Text>
+
       <Btn_connexion />
       <Image
         style={{ width: 100, height: 100 }}

@@ -10,21 +10,35 @@ import {
 export default class Btn_connexion extends Component {
   constructor(props) {
     super(props);
-    this.state = { mail: "Init", pwd: "Init" };
+    this.selected = true;
   }
   render() {
     return (
-      <View style={{ height: 10, width: 10, backgroundColor: "white" }}>
+      <View>
         <TouchableOpacity
-          onPress={() => (selected = !!selected)}
+          onPress={() => (this.selected = !!this.selected)}
           style={[
             styles.item,
-            { backgroundColor: selected ? "#6e3b6e" : "#f9c2ff" }
+            { backgroundColor: this.selected ? "#6e3b6e" : "#f9c2ff" }
           ]}
         >
-          <Text style={styles.title}>{title}</Text>
+          <Text style={styles.btn_text}>Connexion</Text>
         </TouchableOpacity>
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  btn_text: {
+    fontSize: 18,
+    fontWeight: "bold"
+  },
+  item: {
+    borderRadius: 20,
+    alignItems: "center",
+    paddingHorizontal: 50,
+    paddingVertical: 10,
+    margin: 10
+  }
+});
