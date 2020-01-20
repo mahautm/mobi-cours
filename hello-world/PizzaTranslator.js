@@ -14,6 +14,7 @@ export default class PizzaTranslator extends Component {
           style={{ height: 40 }}
           placeholder="Type here to translate!"
           onChangeText={text => {
+            alert(this.state.mail + " Understood");
             return this.setState({ text });
           }}
           onSubmitEditing={() => alert("Bonjour " + this.state.text)}
