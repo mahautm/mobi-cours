@@ -20,20 +20,9 @@ const DATA = [
 export default class Login extends Component {
   constructor(props) {
     super(props);
-    this.state = { mail: "Init", pwd: "Init" };
-  }
+    this.state = this.props.loginStore.state;
+    this.props.loginStore.addObserver(this);
 
-  TestPassword() {
-    alert(DATA.map(x => x.mail));
-    if (DATA.map(x => x.mail).includes(this.state.mail)) {
-      if (DATA.map(x => x.pwd).includes(this.state.pwd)) {
-        alert("Well done, you are logged in !");
-      } else {
-        alert("Password is invalid !");
-      }
-    } else {
-      alert("Uknown username : " + this.state.mail);
-    }
   }
 
   render() {
@@ -48,7 +37,7 @@ export default class Login extends Component {
           <TextInput
             placeholder="Enter Username"
             onChangeText={text => {
-              this.setState({ mail: text });
+              this.props.loginStore.updateMail(text);
             }}
             // value={this.mail.text}
           />
@@ -60,11 +49,8 @@ export default class Login extends Component {
             secureTextEntry={true}
             placeholder="Enter Password"
             onChangeText={text => {
-              this.setState({ pwd: text });
+              this.props.loginStore.updatePwd(text);
             }}
-            onSubmitEditing={text => {
-              this.TestPassword();
-            }} //   value={this.text}
           />
         </View>
       </View>

@@ -6,17 +6,25 @@ import {
   StyleSheet,
   TouchableOpacity
 } from "react-native";
+import Login from "./Login";
 
 export default class Btn_connexion extends Component {
   constructor(props) {
     super(props);
     this.selected = true;
+    this.state = this.props.loginStore.state;
+    this.props.loginStore.addObserver(this);
   }
   render() {
     return (
       <View>
         <TouchableOpacity
-          onPress={() => (this.selected = !!this.selected)}
+          onPress={() => 
+            {
+              this.selected = !!this.selected;
+              this.props.loginStore.testMailPwd();
+            }
+          }
           style={[
             styles.item,
             { backgroundColor: this.selected ? "#6e3b6e" : "#f9c2ff" }
