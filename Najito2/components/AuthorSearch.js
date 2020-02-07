@@ -1,21 +1,32 @@
 import React from "react";
-import { View, Text, Button, Image, TextInput } from "react-native";
-import { getPoemByAuthor } from "./helpers/poetryAPI";
+import { View, Text, Button, FlatList, TextInput } from "react-native";
+import { ModuleItem } from "./ModuleItem";
+import { getPoemByAuthor } from "../helpers/poetryAPI";
+
 export default class AuthorSearch extends React.Component {
   constructor(props) {
     super(props);
     this.state = { value: "", poems: {}, isLoading: false };
   }
+
   _getPoemByAuthorWithFeedback = () => {
     this.setState({ isLoading: true });
 
-    getRandomBrewdog(this.value).then(beer =>
+    getPoemByAuthor(this.state.value).then(input =>
       this.setState({
-        poems: response,
+        poems: input,
         isLoading: false // la requête est terminée
       })
     );
   };
+
+  // _test = () => {
+  //   let text = "";
+  //   Array.prototype.forEach.call(this.state.poems, element => {
+  //     text += element.title + "1\n";
+  //   });
+  //   return this.text;
+  // };
 
   render() {
     return (
@@ -47,16 +58,17 @@ export default class AuthorSearch extends React.Component {
             onChangeText={text => {
               this.setState({ value: text });
             }}
-            onEndEditing={() => _getPoemByAuthorWithFeedback()}
+            onSubmitEditing={() => this._getPoemByAuthorWithFeedback()}
             value={this.state.value}
           />
         </View>
-        <FlatList
-          //data={this._modules}
+        {/* <FlatList
+          data={this._modules}
           data={this.state.poems}
-          keyExtractor={item => item.idModule.toString()}
-          renderItem={({ item }) => <ModuleItem module={item} />}
-        />
+          keyExtractor={item => item.title.toString()}
+          renderItem={({ item }) => <ModuleItem module={item}></ModuleItem>}
+        /> */}
+        <Text>{this.state.poems}</Text>
       </View>
     );
   }
